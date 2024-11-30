@@ -2,8 +2,8 @@
 
 void Quilt::Window::CreateWindow()
 {
-  m_window = glfwCreateWindow(this->m_width,
-   this->m_height, this->m_title.c_str(), nullptr, nullptr);
+  m_window = glfwCreateWindow(this->data.m_width,
+   this->data.m_height, this->data.m_title.c_str(), nullptr, nullptr);
 
   if (!m_window)
   {
@@ -11,6 +11,8 @@ void Quilt::Window::CreateWindow()
     glfwTerminate();
     exit(1);
   }
+
+  glfwSetWindowUserPointer(this->m_window, &this->data);
 }
 
 void Quilt::Window::DestroyWindow()
@@ -20,13 +22,13 @@ void Quilt::Window::DestroyWindow()
 
 void Quilt::Window::setSize(int width, int height)
 {
-  this->m_width = width;
-  this->m_height = height;
+  this->data.m_width = width;
+  this->data.m_height = height;
 
   if (this->m_window)
   {
     glfwSetWindowSize(this->m_window,
-     this->m_width, this->m_height);
+     this->data.m_width, this->data.m_height);
   }
   
 }
@@ -44,4 +46,16 @@ void Quilt::Window::swapBuffers()
 void Quilt::Window::makeContextCurrent()
 {
   glfwMakeContextCurrent(this->m_window);
+}
+
+void Quilt::Window::OnStart()
+{
+}
+
+void Quilt::Window::OnUpdate()
+{
+}
+
+void Quilt::Window::OnEnd()
+{
 }
