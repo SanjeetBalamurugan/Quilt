@@ -16,7 +16,16 @@ public:
     printf("From Window1: Window Started");
   }
 
+  void OnWindowResize() override {
+    printf("Works!!");
+  }
+
   void OnUpdate() {
+    if (Quilt::Input::getInstance().isKeyPressed(Quilt::KeyCode::Space))
+    {
+      printf("Space Pressed!!!");
+    }
+    
     glClearColor(1,0,0.5,1);
   }
 };

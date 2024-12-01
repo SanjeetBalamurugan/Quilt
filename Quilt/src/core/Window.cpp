@@ -59,3 +59,7 @@ void Quilt::Window::OnUpdate()
 void Quilt::Window::OnEnd()
 {
 }
+
+void Quilt::Window::OnWindowResize()
+{
+}

@@ -4,6 +4,7 @@
 #include "Window.h"
 #include "event/WindowEvents.h"
 #include "event/MouseEvent.h"
+#include "event/KeyEvent.h"
 
 namespace Quilt
 {

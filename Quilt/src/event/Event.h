@@ -9,7 +9,10 @@ namespace Quilt
     WindowResize,
 
     // Mouse Events
-    MouseMove
+    MouseMove,
+
+    // Key events
+    KeyPressed
   };
 
   class Event

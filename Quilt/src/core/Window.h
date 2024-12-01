@@ -15,6 +15,7 @@ namespace Quilt
     unsigned int m_width = 500;
     unsigned int m_height = 500;
     std::string m_title = "Example Quilt App";
+    Window* m_window;
     
     EventCallbackFn callback;
   };
@@ -23,6 +24,7 @@ namespace Quilt
       data.m_width = width;
       data.m_height = height;
       data.m_title = title;
+      data.m_window = this;
     }
 
     void CreateWindow();
@@ -42,6 +44,8 @@ namespace Quilt
     virtual void OnStart();
     virtual void OnUpdate();
     virtual void OnEnd();
+
+    virtual void OnWindowResize();
 
     virtual ~Window() = default;
 

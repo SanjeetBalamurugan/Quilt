@@ -63,11 +63,19 @@ namespace Quilt
             data.m_height = height;
 
             data.callback(e);
+            data.m_window->OnWindowResize();
           });
 
           glfwSetCursorPosCallback(window->getWindow(), [](GLFWwindow* _window, double xpos, double ypos){
             Window::WindowData data = *(Window::WindowData*)glfwGetWindowUserPointer(_window);
             MouseMoveEvent e(xpos, ypos);
+
+            data.callback(e);
+          });
+
+          glfwSetKeyCallback(window->getWindow(), [](GLFWwindow* _window, int key, int scancode, int action, int mods){
+            Window::WindowData data = *(Window::WindowData*)glfwGetWindowUserPointer(_window);
+            KeyPressedEvent e(key, scancode, action, mods);
 
             data.callback(e);
           });
