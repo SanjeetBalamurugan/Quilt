@@ -1,65 +1,19 @@
 #include "Window.h"
 
-void Quilt::Window::CreateWindow()
-{
-  m_window = glfwCreateWindow(this->data.m_width,
-   this->data.m_height, this->data.m_title.c_str(), nullptr, nullptr);
+void Quilt::Window::Create() {
+  this->m_Window = glfwCreateWindow(this->m_Width, this->m_Height,
+   this->m_Title.c_str(), nullptr, nullptr);
 
-  if (!m_window)
+  if (!m_Window)
   {
-    std::cerr << "Failed To Create Window!\n";
-    glfwTerminate();
-    exit(1);
-  }
-
-  glfwSetWindowUserPointer(this->m_window, &this->data);
+    std::cerr << "Window '" << this->m_Title << "' failed to initialize!!!\n";
+    exit(-1);
+  } 
 }
 
-void Quilt::Window::DestroyWindow()
+void Quilt::Window::Destroy()
 {
-  glfwDestroyWindow(this->m_window);
-}
-
-void Quilt::Window::setSize(int width, int height)
-{
-  this->data.m_width = width;
-  this->data.m_height = height;
-
-  if (this->m_window)
-  {
-    glfwSetWindowSize(this->m_window,
-     this->data.m_width, this->data.m_height);
-  }
-  
-}
-
-bool Quilt::Window::shouldClose()
-{
-  return true && glfwWindowShouldClose(this->m_window);
-}
-
-void Quilt::Window::swapBuffers()
-{
-  glfwSwapBuffers(this->m_window);
-}
-
-void Quilt::Window::makeContextCurrent()
-{
-  glfwMakeContextCurrent(this->m_window);
-}
-
-void Quilt::Window::OnStart()
-{
-}
-
-void Quilt::Window::OnUpdate()
-{
-}
-
-void Quilt::Window::OnEnd()
-{
-}
-
-void Quilt::Window::OnWindowResize()
-{
+  glfwDestroyWindow(this->m_Window);
+  this->m_Window = nullptr;
+  this->m_Running = false;
 }

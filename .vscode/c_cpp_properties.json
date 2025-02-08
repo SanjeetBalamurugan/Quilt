@@ -7,7 +7,9 @@
                 "${workspaceFolder}/vendor/GLFW/include/**",
                 "${workspaceFolder}/Quilt/src/**",
                 "${workspaceFolder}/Sandbox/src/**",
-                "${workspaceFolder}/Quilt/src"
+                "${workspaceFolder}/Quilt/src",
+                "${workspaceFolder}/Quilt",
+                "${workspaceFolder}/vendor/GLFW/include"
             ],
             "defines": [
                 "_DEBUG",
