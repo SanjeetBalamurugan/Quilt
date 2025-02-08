@@ -15,6 +15,8 @@ namespace Quilt
   WindowResizeEvent(int width, int height)
     : m_Width(width), m_Height(height) {};
 
+  int getWidth() {return this->m_Width;}
+  int getHeight() {return this->m_Height;}
   EventType getEventType() const override { return EventType::WindowResize; };
   };
 } // namespace Quilt

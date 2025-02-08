@@ -9,6 +9,7 @@ void Quilt::Window::Create() {
     std::cerr << "Window '" << this->m_Title << "' failed to initialize!!!\n";
     exit(-1);
   } 
+  glfwSetWindowUserPointer(m_Window, this);
 }
 
 void Quilt::Window::Destroy()

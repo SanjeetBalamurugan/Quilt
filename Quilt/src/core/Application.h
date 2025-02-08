@@ -1,6 +1,7 @@
 #pragma once
 #include "pch.h"
 #include "event/Events.h"
+#include "event/WindowEvents.h"
 #include "Window.h"
 
 namespace Quilt
@@ -18,12 +19,14 @@ namespace Quilt
     Application() { this->Init(); };
 
     void Start();
-    void RegisterWindow(std::unique_ptr<Quilt::Window> window);
     void Stop()
     {
       this->m_Running = false;
       glfwTerminate();
     }
+
+    void RegisterWindow(std::unique_ptr<Quilt::Window> window);
+    
 
     ~Application() {Stop();};
   };

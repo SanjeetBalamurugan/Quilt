@@ -36,10 +36,19 @@ void Quilt::Application::HandleWindows()
         //window->Create();
         window->OnStart();
         window->setWindowRunning(true);
+        window->SetEventCallback([&](Event& e) {
+          this->m_Dispatcher.dispatch(e);
+        });
       }
 
       window->MakeContextCurrent();
       window->OnUpdate();
+
+      glfwSetWindowSizeCallback(window->getWindow(), [](GLFWwindow* window, int width, int height) {
+        WindowResizeEvent e(width, height);
+        Window* win = static_cast<Window*>(glfwGetWindowUserPointer(window));
+        win->GetEventCallback()(e);
+      });
 
       glClear(GL_COLOR_BUFFER_BIT);
       window->SwapBuffers();
