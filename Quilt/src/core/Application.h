@@ -1,31 +1,31 @@
 #pragma once
-
 #include "pch.h"
+#include "event/Events.h"
 #include "Window.h"
-#include "event/WindowEvents.h"
-#include "event/MouseEvent.h"
 
 namespace Quilt
 {
   class Application
   {
   private:
-    bool is_running = true;
-  
-  protected:
-  std::vector<std::unique_ptr<Quilt::Window>> m_windows = {};
+    bool m_Running = true;
+    EventDispatcher m_Dispatcher;
+    std::vector<std::unique_ptr<Quilt::Window>> m_Windows;
 
+    void Init();
+    void HandleWindows();
   public:
-    Application();
-    virtual ~Application();
-    void CreateWindow(std::unique_ptr<Quilt::Window> window);
-    void run();
-    void stop() {this->is_running = false;};
+    Application() { this->Init(); };
 
-    void OnEvent(Event& event) {
-      printf("%s", event.DebugPrint().c_str());
-    };
+    void Start();
+    void RegisterWindow(std::unique_ptr<Quilt::Window> window);
+    void Stop()
+    {
+      this->m_Running = false;
+      glfwTerminate();
+    }
 
-    virtual void update() = 0;
+    ~Application() {Stop();};
   };
-}
+
+} // namespace Quilt

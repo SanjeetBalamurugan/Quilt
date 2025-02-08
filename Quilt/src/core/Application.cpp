@@ -1,89 +1,74 @@
 #include "Application.h"
 
-namespace Quilt
+void Quilt::Application::Init()
 {
-  Application::Application()
+  if (!glfwInit())
   {
-    if (!glfwInit())
-    {
-      std::cerr << "Failed To Initialize GLFW!\n";
-      exit(1);
-    }
+    std::cerr << "GLFW Initialization Failed!" << std::endl;
+    return;
   }
 
-  Application::~Application()
-  {
-  }
+  glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+  glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
+  glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+}
 
-  void Application::CreateWindow(std::unique_ptr<Quilt::Window> window)
+void Quilt::Application::HandleWindows()
+{
+  while (this->m_Running)
   {
-    if (!window)
+    for (auto it = this->m_Windows.begin();
+         it != this->m_Windows.end();)
     {
-      std::cerr << "Attempt to create null window!\n";
-      return;
-    }
+      auto &window = *it;
 
-    window->CreateWindow();
-    window->SetEventCallback(std::bind(&Application::OnEvent, this, std::placeholders::_1));
-    this->m_windows.push_back(std::move(window));
-  }
-
-  void Application::run()
-  {
-    while (this->is_running)
-    {
-      for (auto it = this->m_windows.begin();
-           it != this->m_windows.end();)
+      if (window->ShouldClose())
       {
-        auto &window = *it;
-
-        if (window->shouldClose())
-        {
-          window->DestroyWindow();
-          window->setIsWindowStarted(false);
-          window->OnEnd();
-          it = this->m_windows.erase(it);
-        }
-        else
-        {
-          if (!window->getIsWindowStarted())
-          {
-            window->OnStart();
-            window->setIsWindowStarted(true);
-          }
-          
-
-          window->makeContextCurrent();
-          window->OnUpdate();
-
-          glfwSetWindowSizeCallback(window->getWindow(), [](GLFWwindow* _window, int width, int height){
-            Window::WindowData data = *(Window::WindowData*)glfwGetWindowUserPointer(_window);
-            WindowResizeEvent e(width, height);
-            data.m_width = width;
-            data.m_height = height;
-
-            data.callback(e);
-          });
-
-          glfwSetCursorPosCallback(window->getWindow(), [](GLFWwindow* _window, double xpos, double ypos){
-            Window::WindowData data = *(Window::WindowData*)glfwGetWindowUserPointer(_window);
-            MouseMoveEvent e(xpos, ypos);
-
-            data.callback(e);
-          });
-
-          glClear(GL_COLOR_BUFFER_BIT);
-          window->swapBuffers();
-          ++it;
-        }
+        window->Destroy();
+        window->OnEnd();
+        window->setWindowRunning(false);
+        it = this->m_Windows.erase(it);
+        continue;
       }
 
-      glfwPollEvents();
-
-      if (this->m_windows.empty())
+      if (window->isWindowRunning() == false)
       {
-        this->stop();
+        //window->Create();
+        window->OnStart();
+        window->setWindowRunning(true);
       }
+
+      window->MakeContextCurrent();
+      window->OnUpdate();
+
+      glClear(GL_COLOR_BUFFER_BIT);
+      window->SwapBuffers();
+      ++it;
+    }
+
+    glfwPollEvents();
+
+    if (this->m_Windows.size() == 0)
+    {
+      Stop();
     }
   }
-} // namespace Quilt
+}
+
+void Quilt::Application::Start()
+{
+  this->Init();
+  this->HandleWindows();
+}
+
+void Quilt::Application::RegisterWindow(std::unique_ptr<Quilt::Window> window)
+{
+  if (!window)
+  {
+    std::cerr << "Attempt to create null window!\n";
+    return;
+  }
+
+  window->Create();
+  this->m_Windows.push_back(std::move(window));
+}

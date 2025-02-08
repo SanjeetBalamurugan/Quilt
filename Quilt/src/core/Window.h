@@ -1,55 +1,56 @@
 #pragma once
 
 #include "pch.h"
-#include "event/Event.h"
 
 namespace Quilt
 {
   class Window
   {
-  using EventCallbackFn = std::function<void(Event&)>;
-    
-  
-  public:
-  struct WindowData {
-    unsigned int m_width = 500;
-    unsigned int m_height = 500;
-    std::string m_title = "Example Quilt App";
-    
-    EventCallbackFn callback;
-  };
+  private:
+    GLFWwindow *m_Window = nullptr;
 
-    Window(unsigned int width, unsigned int height, std::string title) {
-      data.m_width = width;
-      data.m_height = height;
-      data.m_title = title;
+    int m_Width = 500;
+    int m_Height = 500;
+    std::string m_Title = "Default Window";
+
+    bool m_IsVsync = false;
+    bool m_Running = false;
+
+  public:
+    Window(int width, int height, std::string title)
+        : m_Width(width), m_Height(height), m_Title(title) {};
+
+    void Create();
+    void Destroy();
+
+    virtual void OnStart() = 0;
+    virtual void OnUpdate() = 0;
+    virtual void OnEnd() = 0;
+
+    bool isVsync() const { return this->m_IsVsync; }
+    void setVsync(bool isVsync) { this->m_IsVsync = isVsync; }
+
+    bool isWindowRunning() const { return this->m_Running; }
+    void setWindowRunning(bool isWindowRunning) { this->m_Running = isWindowRunning; }
+
+    bool ShouldClose()
+    {
+      return glfwWindowShouldClose(this->m_Window);
     }
 
-    void CreateWindow();
-    void DestroyWindow();
+    void SwapBuffers()
+    {
+      glfwSwapBuffers(this->m_Window);
+    }
 
-    GLFWwindow* getWindow() { return this->m_window; }
-    void setSize(int width, int height);
-    bool shouldClose();
-    void swapBuffers();
-    void makeContextCurrent();
+    void MakeContextCurrent()
+    {
+      glfwMakeContextCurrent(this->m_Window);
+    }
 
-    bool getIsWindowStarted() const { return this->m_isWindowStarted; }
-    void setIsWindowStarted(bool x) { this->m_isWindowStarted = x; }
-
-    inline void SetEventCallback(const EventCallbackFn &func) { this->data.callback = func; };
-
-    virtual void OnStart();
-    virtual void OnUpdate();
-    virtual void OnEnd();
+    GLFWwindow *getWindow() const { return this->m_Window; }
 
     virtual ~Window() = default;
-
-    private:
-    WindowData data;
-    GLFWwindow* m_window;
-
-    bool m_isWindowStarted = false;
   };
-  
+
 } // namespace Quilt

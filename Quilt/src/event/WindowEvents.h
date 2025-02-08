@@ -1,42 +1,20 @@
 #pragma once
 
 #include "pch.h"
-#include "Event.h"
+#include "Events.h"
 
 namespace Quilt
 {
-  class WindowEvents : public Event
+  class WindowResizeEvent: public Event
   {
   private:
-    /* data */
-  public:
-    WindowEvents() = default;
-    virtual ~WindowEvents() = default;
-
-    virtual EventType getType() = 0;
-    virtual const char* getName() const = 0;
-    virtual std::string DebugPrint() const = 0;
-  };
-
-  class WindowResizeEvent : public WindowEvents
-  {
-  private:
-    unsigned int m_width;
-    unsigned int m_height;
+  int m_Width = 0;
+  int m_Height = 0;
 
   public:
-    WindowResizeEvent(unsigned int width, unsigned int height)
-      : m_width(width), m_height(height) {};
-    ~WindowResizeEvent() override = default;
+  WindowResizeEvent(int width, int height)
+    : m_Width(width), m_Height(height) {};
 
-    EventType getType() override { return EventType::WindowResize; }
-    const char* getName() const override { return "WindowResize"; };
-    std::string DebugPrint() const {
-      std::stringstream ss;
-
-      ss << "\nWindowResize:\n" << "Width:" << this->m_width << "\nHeight:" << this->m_height ;
-      return ss.str();
-    }
+  EventType getEventType() const override { return EventType::WindowResize; };
   };
-  
 } // namespace Quilt
