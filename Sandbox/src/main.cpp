@@ -9,21 +9,36 @@ public:
   MainWindow()
       : Quilt::Window(500, 500, "HelloWorld") {};
 
-  void OnWindowResizeEvent(Quilt::Event &event)
+  void OnEvent(Quilt::Event &event)
   {
-    // Cast event to WindowResizeEvent
     if (event.getEventType() == Quilt::EventType::WindowResize)
     {
       auto &resizeEvent = static_cast<Quilt::WindowResizeEvent &>(event);
       std::cout << "Window resized: " << resizeEvent.getWidth() << "x" << resizeEvent.getHeight() << std::endl;
     }
+
+    if (event.getEventType() == Quilt::EventType::WindowClose)
+    {
+      std::cout << "Window Closed!" << std::endl;
+    }
+
+    if (event.getEventType() == Quilt::EventType::WindowFocus)
+    {
+      auto &focusEvent = static_cast<Quilt::WindowFocusEvent &>(event);
+      if (focusEvent.IsWindowFocusd())
+      {
+        std::cout << "Window Focused!" << std::endl;
+      }
+      
+    }
   }
 
-  void OnStart() override {};
+  void OnStart() override {
+  };
   void OnUpdate() override
   {
     this->SetEventCallback([this](Quilt::Event &event)
-                           { this->OnWindowResizeEvent(event); });
+                           { this->OnEvent(event); });
   };
   void OnEnd() override {};
 };

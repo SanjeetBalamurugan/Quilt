@@ -50,6 +50,18 @@ void Quilt::Application::HandleWindows()
         win->GetEventCallback()(e);
       });
 
+      glfwSetWindowCloseCallback(window->getWindow(), [](GLFWwindow* window){
+        WindowCloseEvent e(true);
+        Window* win = static_cast<Window*>(glfwGetWindowUserPointer(window));
+        win->GetEventCallback()(e);
+      });
+
+      glfwSetWindowFocusCallback(window->getWindow(), [](GLFWwindow* window, int focused) {
+        WindowFocusEvent e(focused);
+        Window* win = static_cast<Window*>(glfwGetWindowUserPointer(window));
+        win->GetEventCallback()(e);
+      });
+
       glClear(GL_COLOR_BUFFER_BIT);
       window->SwapBuffers();
       ++it;

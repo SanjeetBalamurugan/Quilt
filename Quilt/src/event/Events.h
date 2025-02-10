@@ -11,6 +11,7 @@ namespace Quilt
       //KeyPressed, KeyReleased, MouseMoved, MouseClicked,
       //PhysicsStep, GameTick
   };
+  
   class Event
   {
   public:
