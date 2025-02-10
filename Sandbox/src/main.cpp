@@ -47,9 +47,11 @@ int main()
 {
   std::cout << "Works\n";
   std::unique_ptr<MainWindow> window = std::make_unique<MainWindow>();
+  std::unique_ptr<MainWindow> window1 = std::make_unique<MainWindow>();
 
   Quilt::Application app;
   app.RegisterWindow(std::move(window));
+  app.RegisterWindow(std::move(window1));
 
   app.Start();
   return 0;
