@@ -1,4 +1,5 @@
 #include <iostream>
+#include <optional>
 #include "Quilt.h"
 
 class MainWindow : public Quilt::Window
@@ -37,6 +38,17 @@ public:
   };
   void OnUpdate() override
   {
+    if (Quilt::Input::IsKeyPressed(Quilt::KeyCode::A))
+    {
+      std::cout << "A Pressed\n";
+    }
+
+    if (auto key = Quilt::Input::GetCurrentKeyPressed(); key.has_value())
+    {
+      std::cout << Quilt::KeyCodeToString(*key);
+    }
+    
+    
     this->SetEventCallback([this](Quilt::Event &event)
                            { this->OnEvent(event); });
   };
@@ -47,11 +59,11 @@ int main()
 {
   std::cout << "Works\n";
   std::unique_ptr<MainWindow> window = std::make_unique<MainWindow>();
-  std::unique_ptr<MainWindow> window1 = std::make_unique<MainWindow>();
+  //std::unique_ptr<MainWindow> window1 = std::make_unique<MainWindow>();
 
   Quilt::Application app;
   app.RegisterWindow(std::move(window));
-  app.RegisterWindow(std::move(window1));
+  //app.RegisterWindow(std::move(window1));
 
   app.Start();
   return 0;

@@ -2,6 +2,7 @@
 #include "pch.h"
 #include "event/Events.h"
 #include "event/WindowEvents.h"
+#include "event/InputEvents.h"
 #include "Window.h"
 
 namespace Quilt

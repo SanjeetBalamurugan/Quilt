@@ -9,7 +9,8 @@
                 "${workspaceFolder}/Sandbox/src/**",
                 "${workspaceFolder}/Quilt/src",
                 "${workspaceFolder}/Quilt",
-                "${workspaceFolder}/vendor/GLFW/include"
+                "${workspaceFolder}/vendor/GLFW/include",
+                "F:/sdk/mingw64/include/**"
             ],
             "defines": [
                 "_DEBUG",

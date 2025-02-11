@@ -33,34 +33,59 @@ void Quilt::Application::HandleWindows()
 
       if (window->isWindowRunning() == false)
       {
-        //window->Create();
+        // window->Create();
         window->OnStart();
         window->setWindowRunning(true);
-        window->SetEventCallback([&](Event& e) {
-          this->m_Dispatcher.dispatch(e);
-        });
+        window->SetEventCallback([&](Event &e)
+                                 { this->m_Dispatcher.dispatch(e); });
       }
 
       window->MakeContextCurrent();
       window->OnUpdate();
 
-      glfwSetWindowSizeCallback(window->getWindow(), [](GLFWwindow* window, int width, int height) {
+      glfwSetWindowSizeCallback(window->getWindow(), [](GLFWwindow *window, int width, int height)
+                                {
         WindowResizeEvent e(width, height);
         Window* win = static_cast<Window*>(glfwGetWindowUserPointer(window));
-        win->GetEventCallback()(e);
-      });
+        win->GetEventCallback()(e); });
 
-      glfwSetWindowCloseCallback(window->getWindow(), [](GLFWwindow* window){
+      glfwSetWindowCloseCallback(window->getWindow(), [](GLFWwindow *window)
+                                 {
         WindowCloseEvent e(true);
         Window* win = static_cast<Window*>(glfwGetWindowUserPointer(window));
-        win->GetEventCallback()(e);
-      });
+        win->GetEventCallback()(e); });
 
-      glfwSetWindowFocusCallback(window->getWindow(), [](GLFWwindow* window, int focused) {
+      glfwSetWindowFocusCallback(window->getWindow(), [](GLFWwindow *window, int focused)
+                                 {
         WindowFocusEvent e(focused);
         Window* win = static_cast<Window*>(glfwGetWindowUserPointer(window));
-        win->GetEventCallback()(e);
-      });
+        win->GetEventCallback()(e); });
+
+      glfwSetKeyCallback(window->getWindow(), [](GLFWwindow *window, int key, int scancode, int action, int mods)
+                         {
+        Window* win = static_cast<Window*>(glfwGetWindowUserPointer(window));
+        switch (action)
+        {
+        case GLFW_PRESS:
+         { 
+          if (!KeyPressedEvent::IsKeyPressed(static_cast<KeyCode>(key)))
+          {
+            KeyPressedEvent e(key);
+            win->GetEventCallback()(e);
+          }
+          KeyPressedEvent::UpdateKeyState(static_cast<KeyCode>(key));
+          break;
+        }
+
+        case GLFW_RELEASE:
+        {
+          KeyPressedEvent::ResetKeyState(static_cast<KeyCode>(key));
+          break;
+        }
+        
+        default:
+          break;
+        } });
 
       glClear(GL_COLOR_BUFFER_BIT);
       window->SwapBuffers();
