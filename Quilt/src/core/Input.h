@@ -27,5 +27,22 @@ namespace Quilt
       
       return std::nullopt;
     }
+
+    static double GetMouseX() { return MouseEvent::GetMouseX(); }
+    static double GetMouseY() { return MouseEvent::GetMouseY(); }
+
+    static bool IsMouseKeyPressed(MouseCode code)  {
+      if (MouseClickedEvent::IsMouseKeyPressed(code))
+      {
+        MouseClickedEvent::SetButtonState(code, false);
+        return true;
+      }
+      
+      return false;
+    }
+
+    static std::optional<MouseCode> GetCurrentMouseKeyPressed() {
+      return MouseClickedEvent::GetCurrentMouseKeyPressed();
+    } 
   };
 } // namespace Quilt

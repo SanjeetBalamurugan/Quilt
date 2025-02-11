@@ -5,7 +5,7 @@
 class MainWindow : public Quilt::Window
 {
 private:
-  /* data */
+  int prevX, prevY;
 public:
   MainWindow()
       : Quilt::Window(500, 500, "HelloWorld") {};
@@ -48,6 +48,22 @@ public:
       std::cout << Quilt::KeyCodeToString(*key);
     }
     
+    if (Quilt::Input::GetMouseX() != this->prevX || Quilt::Input::GetMouseY() != this->prevY)
+    {
+        prevX = Quilt::Input::GetMouseX();
+        prevY = Quilt::Input::GetMouseY();
+        std::cout << "\nMouse X: " << prevX << ", Mouse Y: " << prevY << std::endl;
+    }
+
+    if (Quilt::Input::IsMouseKeyPressed(Quilt::MouseCode::MOUSE_BUTTON_LEFT))
+    {
+      std::cout << "LeftKey" << std::endl;
+    }
+    
+    if (auto button = Quilt::Input::GetCurrentMouseKeyPressed(); button.has_value())
+    {
+      std::cout << Quilt::MouseCodeToString(*button) << std::endl;
+    }
     
     this->SetEventCallback([this](Quilt::Event &event)
                            { this->OnEvent(event); });

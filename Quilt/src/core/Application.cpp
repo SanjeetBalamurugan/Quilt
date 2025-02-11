@@ -87,6 +87,38 @@ void Quilt::Application::HandleWindows()
           break;
         } });
 
+      glfwSetCursorPosCallback(window->getWindow(), [](GLFWwindow *window, double xpos, double ypos)
+                               {
+          Window* win = static_cast<Window*>(glfwGetWindowUserPointer(window));
+          MouseEvent e(xpos, ypos);
+          win->GetEventCallback()(e); });
+
+      glfwSetMouseButtonCallback(window->getWindow(), [](GLFWwindow *window, int button, int action, int mods){
+        Window* win = static_cast<Window*>(glfwGetWindowUserPointer(window));
+        switch (action)
+        {
+        case GLFW_PRESS:
+        {
+          if (!MouseClickedEvent::IsMouseKeyPressed(static_cast<MouseCode>(button)))
+          {
+            MouseClickedEvent e(button, action);
+            win->GetEventCallback()(e);
+          }
+          MouseClickedEvent::SetButtonState(static_cast<MouseCode>(button), true);
+          break;
+        }
+
+        case GLFW_RELEASE:
+        {
+          MouseClickedEvent::SetButtonState(static_cast<MouseCode>(button), false);
+          break;
+        }
+        
+        default:
+          break;
+        }
+      });
+
       glClear(GL_COLOR_BUFFER_BIT);
       window->SwapBuffers();
       ++it;

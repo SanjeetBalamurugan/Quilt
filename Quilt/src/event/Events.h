@@ -8,7 +8,7 @@ namespace Quilt
   enum class EventType {
       None = 0,
       WindowClose, WindowResize, WindowFocus,
-      KeyPressed, KeyReleased, MouseMoved, MouseClicked,
+      KeyPressed, KeyReleased, MouseClicked, MousePos,
       //PhysicsStep, GameTick
   };
 
