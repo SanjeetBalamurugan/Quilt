@@ -2,15 +2,16 @@
 
 #include "pch.h"
 
-enum class EventType {
-    None = 0,
-    WindowClose, WindowResize, WindowFocus,
-    //KeyPressed, KeyReleased, MouseMoved, MouseClicked,
-    //PhysicsStep, GameTick
-};
 
 namespace Quilt
 {
+  enum class EventType {
+      None = 0,
+      WindowClose, WindowResize, WindowFocus,
+      KeyPressed, KeyReleased, MouseClicked, MousePos,
+      //PhysicsStep, GameTick
+  };
+
   class Event
   {
   public:

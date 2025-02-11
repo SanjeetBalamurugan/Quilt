@@ -1,6 +1,8 @@
 #pragma once
 
 #include "pch.h"
+#include "event/Events.h"
+#include "event/WindowEvents.h"
 
 namespace Quilt
 {
@@ -15,6 +17,8 @@ namespace Quilt
 
     bool m_IsVsync = false;
     bool m_Running = false;
+
+    std::function<void(Event&)> m_WindowCallback;
 
   public:
     Window(int width, int height, std::string title)
@@ -32,6 +36,9 @@ namespace Quilt
 
     bool isWindowRunning() const { return this->m_Running; }
     void setWindowRunning(bool isWindowRunning) { this->m_Running = isWindowRunning; }
+
+    void SetEventCallback(std::function<void(Event&)> callback) { this->m_WindowCallback = callback; };
+    std::function<void(Event&)> GetEventCallback() const { return this->m_WindowCallback; }
 
     bool ShouldClose()
     {
