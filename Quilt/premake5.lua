@@ -30,3 +30,11 @@ kind "StaticLib"
 		"opengl32",
     "gdi32"
 	}
+
+  filter "configurations:Debug"
+		runtime "Debug"
+		symbols "on"
+
+    defines {
+      "QDEBUG"
+    }

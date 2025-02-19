@@ -13,3 +13,10 @@
 // Macros
 #define KEYCODE_TO_STRING_CASE(value) case KeyCode::value: return #value;
 #define MOUSECODE_TO_STRING_CASE(value) case MouseCode::value: return #value;
+
+#ifdef QDEBUG
+inline void* operator new(size_t size) {
+  std::cout << "Allocations: " << size << "\n";
+  return malloc(size);
+}
+#endif

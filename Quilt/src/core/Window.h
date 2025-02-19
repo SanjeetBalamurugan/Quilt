@@ -40,6 +40,8 @@ namespace Quilt
     void SetEventCallback(std::function<void(Event&)> callback) { this->m_WindowCallback = callback; };
     std::function<void(Event&)> GetEventCallback() const { return this->m_WindowCallback; }
 
+    void SetWindowColor(const char* hexCode, float alpha);
+
     bool ShouldClose()
     {
       return glfwWindowShouldClose(this->m_Window);

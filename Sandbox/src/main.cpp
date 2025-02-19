@@ -6,6 +6,8 @@ class MainWindow : public Quilt::Window
 {
 private:
   int prevX, prevY;
+  bool pressed = false;
+
 public:
   MainWindow()
       : Quilt::Window(500, 500, "HelloWorld") {};
@@ -30,7 +32,6 @@ public:
       {
         std::cout << "Window Focused!" << std::endl;
       }
-      
     }
   }
 
@@ -40,31 +41,40 @@ public:
   {
     if (Quilt::Input::IsKeyPressed(Quilt::KeyCode::A))
     {
-      std::cout << "A Pressed\n";
+      if (pressed)
+      {
+        this->SetWindowColor("e30b3a", 1.0f);
+        pressed = false;
+      }
+      else
+      {
+        pressed = true;
+        this->SetWindowColor("0be345", 1.0f);
+      }
     }
 
     if (auto key = Quilt::Input::GetCurrentKeyPressed(); key.has_value())
     {
-      std::cout << Quilt::KeyCodeToString(*key);
+      // std::cout << Quilt::KeyCodeToString(*key);
     }
-    
+
     if (Quilt::Input::GetMouseX() != this->prevX || Quilt::Input::GetMouseY() != this->prevY)
     {
-        prevX = Quilt::Input::GetMouseX();
-        prevY = Quilt::Input::GetMouseY();
-        std::cout << "\nMouse X: " << prevX << ", Mouse Y: " << prevY << std::endl;
+      prevX = Quilt::Input::GetMouseX();
+      prevY = Quilt::Input::GetMouseY();
+      // std::cout << "\nMouse X: " << prevX << ", Mouse Y: " << prevY << std::endl;
     }
 
     if (Quilt::Input::IsMouseKeyPressed(Quilt::MouseCode::MOUSE_BUTTON_LEFT))
     {
-      std::cout << "LeftKey" << std::endl;
+      // std::cout << "LeftKey" << std::endl;
     }
-    
+
     if (auto button = Quilt::Input::GetCurrentMouseKeyPressed(); button.has_value())
     {
-      std::cout << Quilt::MouseCodeToString(*button) << std::endl;
+      // std::cout << Quilt::MouseCodeToString(*button) << std::endl;
     }
-    
+
     this->SetEventCallback([this](Quilt::Event &event)
                            { this->OnEvent(event); });
   };
@@ -75,12 +85,12 @@ int main()
 {
   std::cout << "Works\n";
   std::unique_ptr<MainWindow> window = std::make_unique<MainWindow>();
-  //std::unique_ptr<MainWindow> window1 = std::make_unique<MainWindow>();
+  // std::unique_ptr<MainWindow> window1 = std::make_unique<MainWindow>();
 
   Quilt::Application app;
-  app.RegisterWindow(std::move(window));
-  //app.RegisterWindow(std::move(window1));
 
+  app.RegisterWindow(std::move(window));
+  // app.RegisterWindow(std::move(window1));
   app.Start();
   return 0;
 }
